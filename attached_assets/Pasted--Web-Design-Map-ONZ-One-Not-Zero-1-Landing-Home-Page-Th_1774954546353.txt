@@ -1,0 +1,89 @@
+
+⸻
+
+🌐 Web Design Map – ONZ (One Not Zero)
+
+1️⃣ Landing / Home Page (الصفحة الرئيسية)
+
+Theme: Binary World – 1s و 0s تتحرك حول الزائر.
+Layout / Experience:
+	•	Hero Section 3D Interactive:
+	•	خلفية تتحرك مع حركة الماوس، 1 يتحرك ويضيء، 0 يختفي تدريجيًا.
+	•	Message on hover: “Value is in the One” أو “We make 1s matter”.
+	•	Mini Gamified Interaction:
+	•	المستخدم يضغط أو يسحب الماوس ليجمع 1s، وكل 10 1s تكشف جزء من رسالة الشركة أو مشروع.
+	•	Animated CTA: زر “Discover Our Value” يتحرك أو يتشكل من 1s المتطايرة.
+
+⸻
+
+2️⃣ About Us (من نحن)
+
+Features:
+	•	Storytelling Scroll: الصفحة تتحرك مع scroll والقصّة تظهر تدريجيًا:
+	•	أولًا: الصفر = المشاكل،
+	•	ثانيًا: الواحد = القيمة،
+	•	ثالثًا: ONZ = الحلول والتميز.
+	•	Interactive Timeline: مشاريع الشركة، كل سنة تظهر كمجموعة من 1s و0s متحركة، الضغط عليها يكشف صورة/فيديو/قصة المشروع.
+	•	Virtual CEO: شخصية AI صغيرة تظهر على اليمين، ممكن تتكلم وتشرح فلسفة الشركة (اختياري صوت + نص).
+
+⸻
+
+3️⃣ Services (خدماتنا)
+
+Features:
+	•	Interactive Grid / Gameboard: كل خدمة = level.
+	•	Hover: يطلع وصف صغير، Click: يظهر مشروع مرتبط بالخدمة بشكل 3D interactive.
+	•	Mini Demo / Sandbox: بعض الخدمات (مثل البرمجة أو التصميم) يمكن تجربة نموذج مباشر صغير للزائر.
+	•	Dynamic Recommendations: AI يحدد الخدمة الأنسب للزائر حسب اهتمامه من خلال تفاعله مع الصفحة.
+
+⸻
+
+4️⃣ Portfolio / Projects (الأعمال)
+
+Features:
+	•	Interactive Cards: كل مشروع 3D card، الضغط عليها يفتح تجربة كاملة:
+	•	عرض المشروع كأنك داخل لعبة صغيرة.
+	•	فيديو قصير أو محاكاة تفاعلية للمشروع.
+	•	Show clients testimonials dynamically.
+	•	Binary Filter: المستخدم يقدر يفلتر المشاريع حسب نوع الخدمة أو “1s الأكثر قيمة” أو “0s تم التغلب عليها”.
+
+⸻
+
+5️⃣ Blog / Insights (مقالات وفلسفة الشركة)
+
+Features:
+	•	كل مقال يظهر كـ 1 floating in space، الضغط عليه يفتح المقال.
+	•	Hover effects: 0s تتلاشى، 1s تتجمع لتشكل النص.
+	•	Gamified read: كل مقال يعطي “points” للزائر لو قرأه كامل، ممكن تتحول لتجربة مميزة أو محتوى إضافي.
+
+⸻
+
+6️⃣ Contact / Get in Touch (التواصل معنا)
+
+Features:
+	•	Interactive Form:
+	•	كل حقل يظهر تدريجيًا مع تأثير 1 و0.
+	•	AI guide داخل الفورم يقترح نصوص جاهزة، ويختصر الوقت على الزائر.
+	•	Live Chat:
+	•	AI assistant + إمكانية التحدث مع مندوب مباشر.
+	•	Chat window يظهر كعنصر floating من corner الشاشة، مع تأثير تفاعلي.
+	•	AR / Map Feature: (اختياري)
+	•	لو الزائر عنده كاميرا أو AR، يشوف موقع المكتب ثلاثي الأبعاد أمامه.
+	•	Social Links:
+	•	كل أيقونة Social تتحرك 1s و0s عند hover، تعطي إحساس بالانسيابية الرقمية.
+
+⸻
+
+7️⃣ Footer / Extras
+
+Features:
+	•	Binary Footer: كل 1 و0 يمثل رابط لمحتوى إضافي: عن الشركة، شروط الخدمة، سياسة الخصوصية.
+	•	Dynamic Effects: حركة متواصلة للـ1s و0s، لكن دون إزعاج.
+	•	Mini Surprise / Easter Egg: لو ضغط الزائر على ترتيب معين من 1s و0s، يفتح نافذة صغيرة: تجربة VR/AR أو خصم/هدية للشركة.
+
+⸻
+
+💡 ملاحظات إضافية:
+	•	كل الصفحة تستخدم WebGL / Three.js للـ3D interactive elements.
+	•	Animation سلس مع lazy loading علشان سرعة التصفح.
+	•	تصميم جذاب جدًا مع ألوان محايدة + تأثيرات نيون بسيطة لتعطي feel رقمي فاخر.

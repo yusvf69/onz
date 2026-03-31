@@ -1,86 +1,112 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
 
 export default function About() {
-  const containerRef = useRef<HTMLElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "end center"]
-  });
+  const [inView, setInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const zeroOpacity = useTransform(scrollYProgress, [0, 0.3, 0.4], [1, 1, 0]);
-  const zeroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.5]);
-  
-  const oneOpacity = useTransform(scrollYProgress, [0.4, 0.5, 0.8], [0, 1, 1]);
-  const oneScale = useTransform(scrollYProgress, [0.4, 0.5, 0.8], [0.5, 1, 1.2]);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
 
-  const text1Opacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
-  const text1Y = useTransform(scrollYProgress, [0.1, 0.3], [50, 0]);
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
 
-  const text2Opacity = useTransform(scrollYProgress, [0.5, 0.7], [0, 1]);
-  const text2Y = useTransform(scrollYProgress, [0.5, 0.7], [50, 0]);
-
-  const finalOpacity = useTransform(scrollYProgress, [0.75, 0.9], [0, 1]);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section ref={containerRef} id="about" className="relative min-h-[300vh] bg-background py-20">
-      <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
+    <section ref={sectionRef} id="about" className="relative bg-[#FAF7F0] py-32 overflow-hidden text-[#080808]">
+      
+      {/* Watermark */}
+      <div className="absolute top-0 left-0 text-[60vw] font-display leading-[0.6] text-primary opacity-20 pointer-events-none select-none -z-0">
+        I.
+      </div>
+
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
         
-        {/* The Zero Phase */}
-        <motion.div 
-          style={{ opacity: zeroOpacity, scale: zeroScale }}
-          className="absolute inset-0 flex flex-col items-center justify-center"
-        >
-          <div className="text-[40vw] leading-none font-mono font-bold text-muted-foreground/20">
-            0
+        {/* Header */}
+        <div className="mb-24">
+          <div className="h-[4px] w-full bg-[#080808] mb-4"></div>
+          <div className="flex items-start gap-8">
+            <span className="font-mono-custom text-sm font-bold pt-4">02</span>
+            <h2 className="font-display text-7xl md:text-8xl tracking-tight">ABOUT</h2>
           </div>
-          <motion.div 
-            style={{ opacity: text1Opacity, y: text1Y }}
-            className="absolute bottom-1/4 text-xl md:text-3xl text-muted-foreground font-light text-center px-6"
-          >
-            This is where most companies stop.
-          </motion.div>
-        </motion.div>
+        </div>
 
-        {/* The One Phase */}
-        <motion.div 
-          style={{ opacity: oneOpacity, scale: oneScale }}
-          className="absolute inset-0 flex flex-col items-center justify-center"
-        >
-          <div className="text-[40vw] leading-none font-mono font-bold text-primary glow-text-primary">
-            1
+        {/* Content Layout */}
+        <div className="flex flex-col md:flex-row gap-12 lg:gap-24 relative">
+          
+          {/* Narrow Left */}
+          <div className="hidden md:flex w-16 justify-center">
+            <div className="font-mono-custom text-xs tracking-[0.3em] whitespace-nowrap" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
+              OUR PHILOSOPHY
+            </div>
           </div>
-          <motion.div 
-            style={{ opacity: text2Opacity, y: text2Y }}
-            className="absolute bottom-1/4 text-xl md:text-3xl text-white font-light text-center px-6"
-          >
-            This is where <span className="font-bold">ONZ</span> begins.
-          </motion.div>
-        </motion.div>
 
-        {/* Final Philosophy Phase */}
-        <motion.div 
-          style={{ opacity: finalOpacity }}
-          className="absolute inset-0 flex flex-col items-center justify-center bg-background/90 backdrop-blur-sm z-10 px-6"
-        >
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter">
-              ONZ = One Not Zero
-            </h2>
-            <p className="text-2xl md:text-4xl leading-relaxed text-muted-foreground font-light">
-              We exist to eliminate mediocrity.<br/>
-              Every project we touch becomes a <span className="text-primary font-mono glow-text-primary font-bold">1</span>.
-            </p>
+          {/* Main Content */}
+          <div className="flex-1 bracket-border p-8 md:p-12 relative">
+            <motion.h3 
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8 }}
+              className="font-editorial italic text-3xl md:text-5xl lg:text-6xl leading-tight mb-16 text-[#080808]"
+            >
+              "We exist to eliminate mediocrity. Every project we touch becomes a One."
+            </motion.h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-[#080808]/20 pt-12">
+              <Stat number="50+" label="PROJECTS DELIVERED" delay={0.2} inView={inView} />
+              <Stat number="12" label="COUNTRIES SERVED" delay={0.4} inView={inView} />
+              <Stat number="7YRS" label="OF EXCELLENCE" delay={0.6} inView={inView} />
+            </div>
           </div>
-        </motion.div>
 
-        {/* Ambient binary particles */}
-        <div className="absolute inset-0 pointer-events-none opacity-20">
-           {/* Add static or slow moving binary particles here if desired */}
+          {/* Right Decoration */}
+          <div className="w-full md:w-1/3 flex justify-center items-center relative min-h-[300px]">
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={inView ? { scale: 1, opacity: 1 } : {}}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="relative w-64 h-64 border-2 border-[#080808] rounded-full flex items-center justify-center"
+            >
+              <div className="w-32 h-32 bg-[#080808] rounded-full flex items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-primary opacity-50 mix-blend-multiply"></div>
+                <span className="font-display text-5xl text-white relative z-10">0→1</span>
+              </div>
+              
+              {/* Decorative lines */}
+              <div className="absolute -top-4 bottom-0 left-1/2 w-[1px] h-[120%] bg-[#080808] -z-10 transform -rotate-45"></div>
+              <div className="absolute -left-4 right-0 top-1/2 h-[1px] w-[120%] bg-[#080808] -z-10 transform -rotate-45"></div>
+            </motion.div>
+          </div>
+
         </div>
 
       </div>
+
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-[#080808]"></div>
     </section>
+  );
+}
+
+function Stat({ number, label, delay, inView }: { number: string, label: string, delay: number, inView: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, delay }}
+      className="flex flex-col"
+    >
+      <span className="font-display text-6xl md:text-7xl text-[#0066FF] tracking-tight">{number}</span>
+      <span className="font-mono-custom text-[10px] tracking-widest uppercase text-[#080808] mt-2">{label}</span>
+    </motion.div>
   );
 }

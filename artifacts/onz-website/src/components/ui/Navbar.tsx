@@ -5,25 +5,15 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const links = [
-    { label: 'About', href: '#about' },
-    { label: 'Services', href: '#services' },
-    { label: 'Founder', href: '#founder' },
-    { label: 'Portfolio', href: '#portfolio' },
-    { label: 'Blog', href: '#blog' },
-    { label: 'Contact', href: '#contact' },
-  ];
+  const links = ['About', 'Services', 'Founder', 'Portfolio', 'Insights'];
 
-  const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const el = document.querySelector(href);
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
@@ -35,38 +25,52 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'py-4 bg-background/80 backdrop-blur-md border-b border-white/5 shadow-[0_4px_30px_rgba(0,245,255,0.05)]' : 'py-6 bg-transparent'
+        scrolled 
+          ? 'py-4 bg-[#080808]/80 backdrop-blur-md border-b border-primary/20 shadow-[0_4px_30px_rgba(201,168,76,0.1)]' 
+          : 'py-6 bg-transparent border-b border-primary'
       }`}
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        <a 
-          href="#top" 
-          onClick={(e) => scrollTo(e, '#top')}
-          className="text-2xl font-bold font-sans tracking-tighter flex items-center gap-1 group"
+        
+        {/* Left: Logo */}
+        <div 
+          className="flex flex-col cursor-pointer group"
+          onClick={() => scrollTo('top')}
+          data-testid="link-logo"
         >
-          <span className="text-white group-hover:text-primary transition-colors">ON</span>
-          <span className="text-primary glow-text-primary">Z</span>
-        </a>
+          <span className="font-display text-2xl tracking-widest text-white group-hover:glow-gold transition-all">ONZ</span>
+          <span className="font-mono-custom text-[10px] text-primary tracking-widest">ONE NOT ZERO</span>
+        </div>
 
-        <div className="hidden md:flex items-center gap-8">
-          {links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={(e) => scrollTo(e, link.href)}
-              className="text-sm font-mono text-muted-foreground hover:text-white transition-colors relative group"
-            >
-              <span className="opacity-0 group-hover:opacity-100 text-primary absolute -left-3 transition-opacity">1</span>
-              {link.label}
-              <span className="opacity-0 group-hover:opacity-100 text-primary absolute -right-3 transition-opacity">0</span>
-            </a>
+        {/* Center: Links */}
+        <div className="hidden md:flex items-center gap-6">
+          {links.map((link, i) => (
+            <div key={link} className="flex items-center gap-6">
+              <button
+                onClick={() => scrollTo(link.toLowerCase())}
+                className="text-[11px] font-sans uppercase tracking-[0.2em] text-white hover:text-primary transition-colors relative group"
+                data-testid={`link-nav-${link.toLowerCase()}`}
+              >
+                {link}
+                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </button>
+              {i < links.length - 1 && <span className="text-white/20 font-mono-custom">|</span>}
+            </div>
           ))}
         </div>
         
-        {/* Mobile menu could be added here, keeping minimal for now */}
-        <div className="md:hidden">
-           <span className="text-primary font-mono text-xl">1/0</span>
+        {/* Right: CTA & Badge */}
+        <div className="flex items-center gap-6">
+          <span className="hidden md:block font-mono-custom text-[10px] text-white/50 tracking-widest border border-white/20 px-2 py-1" data-testid="text-est-badge">EST. 2018</span>
+          <button 
+            onClick={() => scrollTo('contact')}
+            className="font-sans text-[11px] uppercase tracking-[0.2em] text-white border border-primary rounded-full px-6 py-2 hover:bg-primary hover:text-[#080808] transition-colors"
+            data-testid="button-contact-us"
+          >
+            Contact Us
+          </button>
         </div>
+
       </div>
     </motion.nav>
   );

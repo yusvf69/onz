@@ -10,13 +10,12 @@ import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
-  // Force dark mode on the document element
   useEffect(() => {
     document.documentElement.classList.add("dark");
   }, []);
 
   return (
-    <div className="min-h-[100dvh] w-full bg-background text-foreground selection:bg-primary/30 selection:text-primary">
+    <div className="min-h-[100dvh] w-full bg-background text-foreground selection:bg-primary selection:text-background">
       <Navbar />
       <main>
         <Hero />

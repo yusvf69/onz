@@ -1,196 +1,153 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Twitter, Linkedin, Mail } from 'lucide-react';
 
 export default function Contact() {
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success'>('idle');
-  const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormState('submitting');
-    
-    // Simulate API call and explosion effect
     setTimeout(() => {
       setFormState('success');
-      setTimeout(() => setFormState('idle'), 5000);
+      setTimeout(() => setFormState('idle'), 4000);
     }, 1500);
   };
 
-  const aiHints: Record<string, string> = {
-    name: "Identify yourself to the system.",
-    email: "Where should we send the transmission?",
-    type: "What level of intervention is required?",
-    message: "Detail your vision. Be precise. We only build 1s."
-  };
-
   return (
-    <section id="contact" className="py-24 md:py-32 bg-black relative border-t border-white/5">
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+    <section id="contact" className="relative bg-[#080808] py-32 overflow-hidden text-white border-t border-primary/20">
+      
+      <div className="watermark-text bottom-0 left-0 leading-none">
+        07
+      </div>
+
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24">
           
-          {/* Left Column: Copy & Socials */}
-          <div>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter mb-6">
-              Initiate <br/><span className="text-primary font-mono glow-text-primary">Contact</span>
+          {/* Left Side */}
+          <div className="flex flex-col justify-center">
+            <h2 className="font-display text-7xl md:text-[10vw] leading-[0.8] tracking-tighter text-primary mb-12">
+              LET'S BUILD <br />A <span className="text-[#0066FF]">1</span>
             </h2>
-            <p className="text-muted-foreground text-lg mb-12 max-w-md font-light leading-relaxed">
-              Ready to leave the zero state? Transmit your coordinates and objective. We only respond to serious inquiries.
-            </p>
 
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-xs font-mono text-white/40 mb-4 tracking-widest uppercase">Direct Line</h3>
-                <a href="mailto:hello@onz.agency" className="text-xl md:text-2xl font-mono text-white hover:text-primary transition-colors flex items-center gap-4 group">
-                  hello@onz.agency
-                  <span className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all text-primary">↗</span>
-                </a>
+            <div className="space-y-8 mt-auto">
+              <div className="font-mono-custom text-sm flex flex-col gap-2">
+                <span className="text-white/40 text-[10px] tracking-widest">EMAIL</span>
+                <a href="mailto:hello@onz.agency" className="hover:text-primary transition-colors" data-testid="link-email">hello@onz.agency</a>
               </div>
-
-              <div>
-                <h3 className="text-xs font-mono text-white/40 mb-4 tracking-widest uppercase">Network</h3>
-                <div className="flex gap-6">
-                  {[
-                    { icon: Twitter, label: "Twitter" },
-                    { icon: Linkedin, label: "LinkedIn" },
-                    { icon: Github, label: "GitHub" },
-                  ].map((social, i) => (
-                    <a key={i} href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:text-primary hover:border-primary hover:shadow-[0_0_15px_rgba(0,245,255,0.3)] transition-all relative group overflow-hidden">
-                      <social.icon size={20} className="relative z-10" />
-                      {/* Binary hover effect */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 font-mono text-[8px] text-primary/30 pointer-events-none break-all leading-none z-0">
-                        1010101
-                      </div>
-                    </a>
-                  ))}
-                </div>
+              <div className="font-mono-custom text-sm flex flex-col gap-2">
+                <span className="text-white/40 text-[10px] tracking-widest">LOCATION</span>
+                <span>CAIRO, EGYPT // GLOBAL</span>
+              </div>
+              
+              <div className="flex gap-6 font-mono-custom text-xs pt-8 border-t border-white/10">
+                <a href="#" className="hover:text-primary transition-colors flex items-center gap-1 group" data-testid="link-social-twitter">
+                  TWITTER <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </a>
+                <a href="#" className="hover:text-primary transition-colors flex items-center gap-1 group" data-testid="link-social-linkedin">
+                  LINKEDIN <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </a>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Form */}
-          <div className="relative">
-            {/* Floating AI Guide */}
-            <AnimatePresence mode="wait">
-              {focusedField && (
-                <motion.div
-                  key={focusedField}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="absolute -top-12 right-0 bg-primary/10 border border-primary/30 text-primary font-mono text-xs px-4 py-2 rounded flex items-center gap-2"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  {aiHints[focusedField]}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <form onSubmit={handleSubmit} className="space-y-6 bg-[#050505] p-8 border border-white/5 relative z-10">
+          {/* Right Side - Form */}
+          <div className="relative p-8 md:p-12 border border-white/10 bg-[#080808]/50 backdrop-blur">
+            <form onSubmit={handleSubmit} className="space-y-12" data-testid="form-contact">
               
-              <div className="space-y-2 relative group">
-                <label className="text-xs font-mono text-white/50 uppercase tracking-widest">Name</label>
-                <div className="relative">
-                  <div className="absolute top-0 left-0 w-0 h-full border-l-2 border-primary transition-all duration-300 group-focus-within:w-full bg-primary/5 -z-10 opacity-0 group-focus-within:opacity-100" />
-                  <input 
-                    type="text" 
-                    required
-                    onFocus={() => setFocusedField('name')}
-                    onBlur={() => setFocusedField(null)}
-                    className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-primary transition-colors font-mono"
-                    placeholder="Enter designation"
-                  />
-                </div>
+              <div className="relative group">
+                <input 
+                  type="text" 
+                  id="name"
+                  required
+                  className="w-full bg-transparent border-b border-white/30 py-2 font-mono-custom text-white placeholder-transparent focus:outline-none focus:border-primary peer"
+                  placeholder="NAME"
+                  data-testid="input-name"
+                />
+                <label 
+                  htmlFor="name" 
+                  className="absolute left-0 top-2 font-mono-custom text-xs text-white/50 transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-primary peer-valid:-top-4 peer-valid:text-[10px]"
+                >
+                  NAME
+                </label>
               </div>
 
-              <div className="space-y-2 relative group">
-                <label className="text-xs font-mono text-white/50 uppercase tracking-widest">Email</label>
-                <div className="relative">
-                  <div className="absolute top-0 left-0 w-0 h-full border-l-2 border-primary transition-all duration-300 group-focus-within:w-full bg-primary/5 -z-10 opacity-0 group-focus-within:opacity-100" />
-                  <input 
-                    type="email" 
-                    required
-                    onFocus={() => setFocusedField('email')}
-                    onBlur={() => setFocusedField(null)}
-                    className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-primary transition-colors font-mono"
-                    placeholder="system@domain.com"
-                  />
-                </div>
+              <div className="relative group">
+                <input 
+                  type="email" 
+                  id="email"
+                  required
+                  className="w-full bg-transparent border-b border-white/30 py-2 font-mono-custom text-white placeholder-transparent focus:outline-none focus:border-primary peer"
+                  placeholder="EMAIL"
+                  data-testid="input-email"
+                />
+                <label 
+                  htmlFor="email" 
+                  className="absolute left-0 top-2 font-mono-custom text-xs text-white/50 transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-primary peer-valid:-top-4 peer-valid:text-[10px]"
+                >
+                  EMAIL
+                </label>
               </div>
 
-              <div className="space-y-2 relative group">
-                <label className="text-xs font-mono text-white/50 uppercase tracking-widest">Protocol Type</label>
-                <div className="relative">
-                  <div className="absolute top-0 left-0 w-0 h-full border-l-2 border-primary transition-all duration-300 group-focus-within:w-full bg-primary/5 -z-10 opacity-0 group-focus-within:opacity-100" />
-                  <select 
-                    required
-                    onFocus={() => setFocusedField('type')}
-                    onBlur={() => setFocusedField(null)}
-                    className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-white focus:outline-none focus:border-primary transition-colors font-mono appearance-none"
-                  >
-                    <option value="" disabled selected className="bg-black text-white/50">Select objective...</option>
-                    <option value="web" className="bg-black text-white">01 Web Platform</option>
-                    <option value="mobile" className="bg-black text-white">10 Mobile Application</option>
-                    <option value="ai" className="bg-black text-white">11 AI Integration</option>
-                    <option value="other" className="bg-black text-white">00 Custom Protocol</option>
-                  </select>
-                </div>
+              <div className="relative group">
+                <select 
+                  id="type"
+                  required
+                  className="w-full bg-transparent border-b border-white/30 py-2 font-mono-custom text-white focus:outline-none focus:border-primary appearance-none cursor-pointer"
+                  data-testid="select-type"
+                >
+                  <option value="" disabled selected className="bg-[#080808]">PROJECT TYPE</option>
+                  <option value="web" className="bg-[#080808]">WEB PLATFORM</option>
+                  <option value="mobile" className="bg-[#080808]">MOBILE APP</option>
+                  <option value="ai" className="bg-[#080808]">AI INTEGRATION</option>
+                  <option value="other" className="bg-[#080808]">OTHER</option>
+                </select>
+                <div className="absolute right-0 top-2 pointer-events-none text-primary font-mono-custom">↓</div>
               </div>
 
-              <div className="space-y-2 relative group">
-                <label className="text-xs font-mono text-white/50 uppercase tracking-widest">Parameters</label>
-                <div className="relative">
-                  <div className="absolute top-0 left-0 w-0 h-full border-l-2 border-primary transition-all duration-300 group-focus-within:w-full bg-primary/5 -z-10 opacity-0 group-focus-within:opacity-100" />
-                  <textarea 
-                    required
-                    rows={4}
-                    onFocus={() => setFocusedField('message')}
-                    onBlur={() => setFocusedField(null)}
-                    className="w-full bg-transparent border-b border-white/20 px-0 py-3 text-white placeholder:text-white/20 focus:outline-none focus:border-primary transition-colors font-mono resize-none"
-                    placeholder="Describe the end state..."
-                  />
-                </div>
+              <div className="relative group">
+                <textarea 
+                  id="message"
+                  required
+                  rows={4}
+                  className="w-full bg-transparent border-b border-white/30 py-2 font-mono-custom text-white placeholder-transparent focus:outline-none focus:border-primary peer resize-none"
+                  placeholder="MESSAGE"
+                  data-testid="input-message"
+                />
+                <label 
+                  htmlFor="message" 
+                  className="absolute left-0 top-2 font-mono-custom text-xs text-white/50 transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:text-primary peer-valid:-top-4 peer-valid:text-[10px]"
+                >
+                  MESSAGE
+                </label>
               </div>
 
               <button 
-                type="submit" 
+                type="submit"
                 disabled={formState !== 'idle'}
-                className="w-full py-4 bg-white text-black font-bold font-mono tracking-widest hover:bg-primary transition-colors relative overflow-hidden group mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-primary text-[#080808] font-display text-3xl py-4 hover:bg-white transition-colors disabled:opacity-50"
+                data-testid="button-submit-contact"
               >
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  {formState === 'idle' && "TRANSMIT DATA"}
-                  {formState === 'submitting' && "ENCRYPTING..."}
-                  {formState === 'success' && "TRANSMISSION SUCCESSFUL"}
-                </span>
-                
-                {/* Button Hover effect */}
-                <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                {formState === 'idle' && "SEND MESSAGE"}
+                {formState === 'submitting' && "TRANSMITTING..."}
+                {formState === 'success' && "SUCCESS"}
               </button>
             </form>
 
-            {/* Success Explosion Overlay */}
             <AnimatePresence>
               {formState === 'success' && (
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 bg-primary/90 backdrop-blur-md z-20 flex flex-col items-center justify-center text-black"
+                  className="absolute inset-0 bg-primary/95 flex flex-col items-center justify-center text-[#080808] z-20"
                 >
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="w-20 h-20 border-4 border-black rounded-full flex items-center justify-center mb-4"
-                  >
-                    <span className="font-mono text-4xl font-bold">1</span>
-                  </motion.div>
-                  <h3 className="font-bold text-xl mb-2">System Updated</h3>
-                  <p className="font-mono text-xs">We will return the signal shortly.</p>
+                  <div className="font-display text-8xl mb-4">1</div>
+                  <div className="font-mono-custom text-sm font-bold tracking-widest">TRANSMISSION RECEIVED</div>
                 </motion.div>
               )}
             </AnimatePresence>
-
           </div>
+
         </div>
       </div>
     </section>

@@ -1,47 +1,47 @@
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 const projects = [
-  { id: 1, name: "FinTech Platform", category: "01 WEB", year: "2024", desc: "A high-frequency trading interface built for speed and precision.", imgColor: "from-blue-900/40 to-cyan-900/20" },
-  { id: 2, name: "AI Health Assistant", category: "11 AI", year: "2023", desc: "Predictive diagnostics powered by custom LLM integrations.", imgColor: "from-emerald-900/40 to-teal-900/20" },
-  { id: 3, name: "E-Commerce Empire", category: "01 WEB", year: "2024", desc: "Headless Shopify build handling 10k+ concurrent users seamlessly.", imgColor: "from-purple-900/40 to-indigo-900/20" },
-  { id: 4, name: "Smart City Dashboard", category: "11 AI", year: "2023", desc: "Real-time IoT data visualization for metropolitan infrastructure.", imgColor: "from-cyan-900/40 to-blue-900/20" },
-  { id: 5, name: "EdTech Revolution", category: "10 MOBILE", year: "2022", desc: "Gamified learning mobile app with offline-first capabilities.", imgColor: "from-amber-900/40 to-green-900/20" },
-  { id: 6, name: "Blockchain Identity", category: "01 WEB", year: "2022", desc: "Web3 authentication protocol with zero-knowledge proofs.", imgColor: "from-indigo-900/40 to-purple-900/20" },
+  { id: "01", name: "ALGORITHMIC TRADING", category: "WEB", year: "2024", desc: "High-frequency interface for institutional firms." },
+  { id: "02", name: "NEURAL HEALTH AI", category: "AI", year: "2023", desc: "Predictive diagnostics using custom models." },
+  { id: "03", name: "LUXURY COMMERCE", category: "WEB", year: "2024", desc: "Headless storefront handling 10k+ concurrents." },
+  { id: "04", name: "URBAN SENSORY", category: "MOBILE", year: "2023", desc: "Real-time IoT visualization for smart cities." },
 ];
 
-const filters = ["ALL", "01 WEB", "10 MOBILE", "11 AI"];
-
 export default function Portfolio() {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState("ALL");
 
-  const filteredProjects = projects.filter(p => 
-    activeFilter === "ALL" ? true : p.category === activeFilter
-  );
+  const filters = ["ALL", "01 WEB", "10 MOBILE", "11 AI"];
+
+  const filteredProjects = projects.filter(p => {
+    if (activeFilter === "ALL") return true;
+    return activeFilter.includes(p.category);
+  });
 
   return (
-    <section id="portfolio" className="py-24 md:py-32 bg-black relative border-t border-white/5">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-8">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              The <span className="text-primary font-mono glow-text-primary">1s</span> We Built
-            </h2>
-            <p className="text-muted-foreground font-mono text-sm max-w-md uppercase tracking-widest">
-              Proof of concept. Proof of execution.
-            </p>
-          </div>
+    <section id="portfolio" className="relative bg-[#080808] py-32 overflow-hidden text-[#FAF7F0]">
+      
+      <div className="watermark-text top-1/4 right-0 text-right opacity-[0.03]">
+        05
+      </div>
 
-          <div className="flex flex-wrap gap-2 md:gap-4">
-            {filters.map((filter) => (
-              <button
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
+        
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-24 border-b-4 border-primary pb-8">
+          <div>
+            <h2 className="font-display text-6xl md:text-8xl tracking-tight mb-4">THE 1s WE BUILT</h2>
+            <p className="font-mono-custom text-sm text-primary">PROOF OF EXECUTION</p>
+          </div>
+          
+          <div className="flex gap-6 mt-8 md:mt-0 font-mono-custom text-xs">
+            {filters.map(filter => (
+              <button 
                 key={filter}
+                className={`transition-colors ${activeFilter === filter ? 'border-b border-primary pb-1 text-primary' : 'text-white/50 hover:text-white'}`}
                 onClick={() => setActiveFilter(filter)}
-                className={`px-4 py-2 font-mono text-xs md:text-sm transition-all duration-300 border ${
-                  activeFilter === filter 
-                    ? 'border-primary text-primary bg-primary/10 shadow-[0_0_15px_rgba(0,245,255,0.2)]' 
-                    : 'border-white/10 text-white/50 hover:text-white hover:border-white/30 bg-transparent'
-                }`}
+                data-testid={`button-filter-${filter.split(' ')[0]}`}
               >
                 {filter}
               </button>
@@ -49,116 +49,71 @@ export default function Portfolio() {
           </div>
         </div>
 
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
-        
-        <div className="mt-20 text-center">
-          <button className="font-mono text-sm text-white/50 hover:text-primary hover:tracking-[0.3em] transition-all duration-300 uppercase tracking-widest">
-            Load More Data...
-          </button>
+        {/* Editorial Grid */}
+        <div className="flex flex-col">
+          {filteredProjects.map((project, i) => {
+            const isEven = i % 2 !== 0;
+            return (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: i * 0.1 }}
+                onMouseEnter={() => setHoveredId(project.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                className="group relative border-b border-primary py-12 flex flex-col md:flex-row gap-8 md:gap-16 items-center transition-all duration-500 hover:pl-4 md:hover:pl-8"
+                data-testid={`card-project-${project.id}`}
+              >
+                {/* Hover Glow */}
+                <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,102,255,0.05)_0%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
+
+                {isEven ? (
+                  <>
+                    <div className="md:w-1/3 flex flex-col gap-4 font-mono-custom text-sm order-2 md:order-1">
+                      <div className="flex justify-between text-white/50 border-b border-white/10 pb-2">
+                        <span>[{project.category}]</span>
+                        <span>{project.year}</span>
+                      </div>
+                      <p className="font-sans text-white/70 font-light">{project.desc}</p>
+                      <a href="#" className="text-primary font-bold hover:underline inline-flex items-center gap-2 mt-4" data-testid={`link-view-project-${project.id}`}>
+                        VIEW <span className="text-lg">→</span>
+                      </a>
+                    </div>
+                    <div className="md:w-2/3 order-1 md:order-2 flex items-center gap-8">
+                      <h3 className={`font-display text-5xl md:text-7xl lg:text-8xl leading-none transition-colors duration-300 ${hoveredId === project.id ? 'text-primary' : 'text-[#FAF7F0]'}`}>
+                        {project.name}
+                      </h3>
+                      <span className="font-mono-custom text-2xl text-primary">{project.id}</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="md:w-2/3 flex items-center gap-8 justify-end order-1 md:order-1 text-right">
+                      <span className="font-mono-custom text-2xl text-primary">{project.id}</span>
+                      <h3 className={`font-display text-5xl md:text-7xl lg:text-8xl leading-none transition-colors duration-300 ${hoveredId === project.id ? 'text-primary' : 'text-[#FAF7F0]'}`}>
+                        {project.name}
+                      </h3>
+                    </div>
+                    <div className="md:w-1/3 flex flex-col gap-4 font-mono-custom text-sm order-2 md:order-2 text-right">
+                      <div className="flex justify-between text-white/50 border-b border-white/10 pb-2">
+                        <span>{project.year}</span>
+                        <span>[{project.category}]</span>
+                      </div>
+                      <p className="font-sans text-white/70 font-light">{project.desc}</p>
+                      <div className="flex justify-end mt-4">
+                        <a href="#" className="text-primary font-bold hover:underline inline-flex items-center gap-2" data-testid={`link-view-project-${project.id}`}>
+                          VIEW <span className="text-lg">→</span>
+                        </a>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
-  );
-}
-
-function ProjectCard({ project }: { project: any }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    
-    const rect = cardRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    
-    setRotateX(yPct * 20 * -1); // 20 max rotation
-    setRotateY(xPct * 20);
-  };
-
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-  };
-
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.4 }}
-      style={{ perspective: 1000 }}
-      className="relative h-[400px] cursor-pointer group"
-    >
-      <motion.div
-        ref={cardRef}
-        className="w-full h-full border border-white/10 bg-[#0a0a0a] relative transform-style-3d transition-all duration-200 ease-out flex flex-col justify-end overflow-hidden"
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d"
-        }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        {/* Background "Image" */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${project.imgColor} opacity-20 group-hover:opacity-40 transition-opacity duration-500`} />
-        
-        {/* Geometric patterns overlay */}
-        <div className="absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity duration-500 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]" />
-
-        {/* Content */}
-        <div 
-          className="relative z-10 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pt-32"
-          style={{ transform: "translateZ(30px)" }} // Pop out effect
-        >
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-xs font-mono text-primary px-2 py-1 bg-primary/10 border border-primary/20">
-              {project.category}
-            </span>
-            <span className="text-xs font-mono text-white/40">
-              {project.year}
-            </span>
-          </div>
-          
-          <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
-            {project.name}
-          </h3>
-          
-          {/* Hidden description that reveals on hover */}
-          <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-300 overflow-hidden">
-            <div className="min-h-0">
-              <p className="text-sm text-muted-foreground mt-2 mb-4">
-                {project.desc}
-              </p>
-              <div className="flex items-center gap-2 text-primary font-mono text-xs font-bold">
-                <span>VIEW_PROJECT</span>
-                <span className="group-hover:translate-x-2 transition-transform">→</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Corner accents */}
-        <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-primary/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-primary/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-primary/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-primary/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-      </motion.div>
-    </motion.div>
   );
 }

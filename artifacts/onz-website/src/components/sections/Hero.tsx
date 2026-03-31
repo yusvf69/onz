@@ -1,84 +1,110 @@
 import { motion } from 'framer-motion';
-import BinaryRain from '@/components/ui/BinaryRain';
+import { useEffect, useState } from 'react';
 
 export default function Hero() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <section id="top" className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden bg-background">
-      <BinaryRain opacity={0.4} />
+    <section id="top" className="relative min-h-[100dvh] flex flex-col md:flex-row overflow-hidden bg-[#080808]">
       
-      <div className="relative z-10 container mx-auto px-6 text-center flex flex-col items-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-6 relative"
-        >
-          <h1 className="text-[12vw] md:text-[8vw] font-bold leading-none tracking-tighter text-white glow-text-primary">
-            ONZ
-          </h1>
-          <motion.div 
-            initial={{ width: 0 }}
-            animate={{ width: "100%" }}
-            transition={{ delay: 1, duration: 1 }}
-            className="h-1 bg-primary absolute -bottom-4 left-0 glow-box-primary"
-          />
-        </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 1 }}
-          className="font-mono text-xl md:text-2xl tracking-[0.2em] text-muted-foreground mb-4 uppercase"
-        >
-          ONE NOT ZERO
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="text-lg md:text-xl text-white/70 max-w-lg mb-12 font-light"
-        >
-          We make <span className="text-primary font-mono font-bold glow-text-primary">1s</span> matter.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-        >
-          <a
-            href="#services"
-            className="group relative inline-flex items-center justify-center px-8 py-4 font-mono text-sm font-bold text-background bg-primary hover:bg-white transition-colors duration-300 overflow-hidden rounded-sm glow-box-primary-hover"
-          >
-            <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
-            <span className="relative flex items-center gap-2">
-              DISCOVER OUR VALUE
-              <motion.span 
-                animate={{ x: [0, 5, 0] }} 
-                transition={{ repeat: Infinity, duration: 1.5 }}
-              >
-                →
-              </motion.span>
-            </span>
-            
-            {/* Hover binary particles could be added here */}
-          </a>
-        </motion.div>
+      {/* BACKGROUND ELEMENTS SPANNING BOTH ZONES */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 dot-grid opacity-20"></div>
+        <div className="absolute top-[20%] w-full h-[1px] bg-primary opacity-30"></div>
+        <div className="absolute top-[60%] w-full h-[1px] bg-primary opacity-30"></div>
+        <div className="absolute top-[85%] w-full h-[1px] bg-primary opacity-30"></div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground"
+      {/* LEFT ZONE */}
+      <div className="relative z-10 w-full md:w-[60%] h-full min-h-[50vh] flex flex-col justify-center px-8 md:px-16 pt-24 pb-12">
+        <div className="absolute top-24 left-8 md:left-16 text-[9px] font-mono-custom tracking-[0.3em] text-white/50" data-testid="text-hero-metadata">
+          DIGITAL AGENCY · EST. 2018 · CAIRO, EGYPT
+        </div>
+
+        <div className="mt-auto md:mt-0 relative">
+          <div className="flex flex-col font-display text-[25vw] md:text-[20vw] leading-[0.8] tracking-tighter text-primary">
+            {['O', 'N', 'Z'].map((letter, i) => (
+              <motion.span
+                key={i}
+                initial={{ y: 100, opacity: 0 }}
+                animate={mounted ? { y: 0, opacity: 1 } : {}}
+                transition={{ duration: 1, delay: 0.2 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="relative"
+              >
+                {letter}
+                <span className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></span>
+              </motion.span>
+            ))}
+          </div>
+
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            animate={mounted ? { scaleX: 1 } : {}}
+            transition={{ duration: 1.5, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full h-[4px] bg-primary origin-left my-4 md:max-w-xl"
+          />
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={mounted ? { opacity: 1 } : {}}
+            transition={{ duration: 1, delay: 1 }}
+            className="font-mono-custom tracking-[0.4em] text-white text-sm mb-12"
+          >
+            ONE NOT ZERO
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={mounted ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 1, delay: 1.2 }}
+            className="font-editorial italic text-2xl md:text-3xl text-white mb-12 border-l-2 border-primary pl-6"
+          >
+            "Value is in the One"
+          </motion.div>
+
+          <motion.a
+            href="#about"
+            initial={{ opacity: 0, y: 20 }}
+            animate={mounted ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1, delay: 1.4 }}
+            className="inline-flex items-center gap-4 font-mono-custom text-sm font-bold text-primary border border-primary px-8 py-4 hover:bg-primary hover:text-[#080808] transition-colors w-fit"
+            data-testid="link-enter-one"
+          >
+            ENTER THE ONE <span className="text-xl">→</span>
+          </motion.a>
+        </div>
+      </div>
+
+      {/* RIGHT ZONE */}
+      <motion.div 
+        initial={{ x: '100%' }}
+        animate={mounted ? { x: 0 } : {}}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 w-full md:w-[40%] h-[50vh] md:h-screen bg-primary flex flex-col items-center justify-center overflow-hidden"
       >
-        <span className="font-mono text-xs tracking-widest">SCROLL</span>
+        <div className="absolute top-0 right-0 w-32 h-32 border-l border-b border-[#080808]/20"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 border-r border-t border-[#080808]/20"></div>
+        
+        {/* Large circle decoration */}
+        <div className="absolute w-[80%] aspect-square rounded-full border border-[#080808]/20"></div>
+        <div className="absolute w-[40%] aspect-square border border-[#080808]/20 rotate-45"></div>
+
         <motion.div 
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="w-px h-12 bg-gradient-to-b from-primary to-transparent"
-        />
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={mounted ? { scale: 1, opacity: 1 } : {}}
+          transition={{ duration: 1, delay: 1.2 }}
+          className="font-display text-[40vw] md:text-[30vw] text-[#080808] leading-none z-10"
+        >
+          I
+        </motion.div>
+
+        <div className="absolute bottom-12 right-12 font-mono-custom text-[#080808] text-4xl">
+          01
+        </div>
       </motion.div>
     </section>
   );

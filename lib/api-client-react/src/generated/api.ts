@@ -5,15 +5,21 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import type {
   QueryFunction,
   QueryKey,
   UseQueryOptions,
   UseQueryResult,
+  UseMutationOptions,
+  UseMutationResult,
 } from "@tanstack/react-query";
 
-import type { HealthStatus } from "./api.schemas";
+import type {
+  HealthStatus,
+  ContactRequest,
+  ContactResponse,
+} from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
 import type { ErrorType } from "../custom-fetch";
@@ -98,4 +104,45 @@ export function useHealthCheck<
   };
 
   return { ...query, queryKey: queryOptions.queryKey };
+}
+
+export const getContactUrl = () => {
+  return `/api/contact`;
+};
+
+export const contact = async (
+  contactRequest: ContactRequest,
+  options?: RequestInit,
+): Promise<ContactResponse> => {
+  return customFetch<ContactResponse>(getContactUrl(), {
+    ...options,
+    body: JSON.stringify(contactRequest),
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+  });
+};
+
+export type ContactMutationResult = NonNullable<
+  Awaited<ReturnType<typeof contact>>
+>;
+
+export type ContactMutationError = ErrorType<unknown>;
+
+export function useContact<TError = ErrorType<unknown>>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof contact>>,
+    TError,
+    ContactRequest
+  >;
+}) {
+  const mutationOptions = options?.mutation;
+
+  return useMutation({
+    mutationFn: (params) => contact(params),
+    ...mutationOptions,
+  }) as UseMutationResult<
+    Awaited<ReturnType<typeof contact>>,
+    TError,
+    ContactRequest
+  >;
 }

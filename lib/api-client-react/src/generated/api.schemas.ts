@@ -8,3 +8,15 @@
 export interface HealthStatus {
   status: string;
 }
+
+export interface ContactRequest {
+  name: string;
+  email: string;
+  type: string;
+  message: string;
+}
+
+export interface ContactResponse {
+  success: boolean;
+  message: string;
+}

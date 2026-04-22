@@ -1,0 +1,20 @@
+{
+  "issuer": "https://digitalpersona.ai",
+  "authorization_endpoint": "https://digitalpersona.ai/oauth/authorize",
+  "token_endpoint": "https://digitalpersona.ai/oauth/token",
+  "registration_endpoint": "https://digitalpersona.ai/oauth/register",
+  "grant_types_supported": [
+    "authorization_code",
+    "client_credentials"
+  ],
+  "response_types_supported": [
+    "code"
+  ],
+  "token_endpoint_auth_methods_supported": [
+    "client_secret_post",
+    "none"
+  ],
+  "jwks_uri": "https://digitalpersona.ai/.well-known/jwks.json",
+  "service_documentation": "https://digitalpersona.ai/docs",
+  "ui_locales_supported": ["en"]
+}

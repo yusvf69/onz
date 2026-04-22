@@ -1,0 +1,114 @@
+# Digital Persona Core - Robots.txt
+# https://digitalpersona.ai
+
+User-agent: *
+Allow: /
+Sitemap: https://digitalpersona.ai/sitemap.xml
+
+# AI Crawlers - Content Signals
+# Allow search but disallow training (respecting website owner's preference)
+
+# OpenAI
+User-agent: GPTBot
+Disallow: /
+Tag: noai
+
+# OpenAI (Crawler)
+User-agent: ChatGPT-User
+Disallow: /
+Tag: noai
+
+# Anthropic
+User-agent: ClaudeBot
+Disallow: /
+Tag: noai
+
+# Anthropic (Web)
+User-agent: anthropic-ai
+Disallow: /
+Tag: noai
+
+# Google AI
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+Tag: noai
+
+# Google Vertex AI
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+Tag: noai
+
+# Google Bot (respects noai)
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Tag: noai
+
+# Google Images
+User-agent: Googlebot-Image
+Allow: /
+Disallow: /api/
+Tag: noai
+
+# Common Crawl
+User-agent: CCBot
+Disallow: /
+Tag: noai
+
+# Duck Duck Go
+User-agent: DuckDuckBot
+Allow: /
+Tag: search
+
+# Bing
+User-agent: bingbot
+Allow: /
+Disallow: /api/
+Tag: search
+
+# Apple (AI)
+User-agent: Applebot
+Allow: /
+Tag: search
+
+# Meta (AI)
+User-agent: Meta-ExternalBot
+Disallow: /
+Tag: noai
+
+# Perplexity AI
+User-agent: PerplexityBot
+Disallow: /
+Tag: noai
+
+# Amazon AWS (AI)
+User-agent: Bytespider
+Disallow: /
+Tag: noai
+
+# Cohere
+User-agent: CohereBot
+Disallow: /
+Tag: noai
+
+# AI21 Labs
+User-agent: AI21Bot
+Disallow: /
+Tag: noai
+
+# Hugging Face
+User-agent: HuggingFaceBot
+Allow: /
+Tag: noai
+
+# Scraping (anti-AI)
+User-agent: OAI-SearchBot
+Disallow: /
+Tag: noai
+
+# Common AI crawlers
+User-agent: GPT-2
+Disallow: /
+Tag: noai

@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: Digital Persona Core API
+  description: API for contact form submissions and service inquiries
+  version: 1.0.0
+  contact:
+    name: Digital Persona Core
+    email: onz@digitalpersona.ai
+servers:
+  - url: https://digitalpersona.ai
+    description: Production server
+paths:
+  /api/contact:
+    post:
+      summary: Submit contact form
+      description: Send a contact form submission via email
+      operationId: submitContact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - type
+                - message
+              properties:
+                name:
+                  type: string
+                  description: Sender's name
+                email:
+                  type: string
+                  format: email
+                  description: Sender's email address
+                type:
+                  type: string
+                  enum:
+                    - website
+                    - mobile
+                    - ai
+                    - consulting
+                    - other
+                  description: Project type
+                message:
+                  type: string
+                  description: Message content
+      responses:
+        '200':
+          description: Email sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          description: Bad request - missing required fields
+        '500':
+          description: Internal server error
+  /api/health:
+    get:
+      summary: Health check
+      description: Check API health status
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

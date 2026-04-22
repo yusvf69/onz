@@ -3,17 +3,29 @@
   "installCommand": "pnpm install",
   "outputDirectory": "dist/public",
   "framework": null,
+  "github": {
+    "enabled": false
+  },
   "routes": [
     {
-      "src": "/",
-      "has": [
-        {
-          "type": "header",
-          "key": "Accept",
-          "value": "(text|application)/markdown.*"
-        }
-      ],
-      "dest": "/api/markdown.ts"
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
+    },
+    {
+      "src": "/sitemap.xml",
+      "dest": "/sitemap.xml"
+    },
+    {
+      "src": "/openapi.yaml",
+      "dest": "/openapi.yaml"
+    },
+    {
+      "src": "/.well-known/(.*)",
+      "dest": "/.well-known/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ],
   "headers": [

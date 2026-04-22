@@ -15,19 +15,28 @@ const BASE_URL = process.env.BASE_URL || "https://digitalpersona.ai";
 
 app.use((req, res, next) => {
   const accept = req.headers.accept || "";
+  const isMarkdown = accept.includes("text/markdown") || accept.includes("application/markdown");
+  const isLinkset = accept.includes("application/linkset+json");
 
-  if (accept.includes("text/markdown") || accept.includes("application/markdown")) {
+  if (isMarkdown) {
     res.setHeader("Content-Type", "text/markdown; charset=utf-8");
+    res.setHeader("Accept-Post", "text/markdown");
+  } else if (isLinkset) {
+    res.setHeader("Content-Type", "application/linkset+json");
   } else {
     res.setHeader("Content-Type", "text/html; charset=utf-8");
   }
 
   res.setHeader("Link", [
-    `<${BASE_URL}/.well-known/ai-plugin.json>; rel="ai-plugin"`,
-    `<${BASE_URL}/.well-known/api-catalog.json>; rel="api-catalog"`,
-    `<${BASE_URL}/docs>; rel="documentation"`,
-    `<${BASE_URL}/openapi.yaml>; rel="api-schema"`,
-    `<${BASE_URL}/.well-known/mcp-server>; rel="mcp-server"`,
+    `<${BASE_URL}/.well-known/api-catalog>; rel="service-desc"`,
+    `<${BASE_URL}/.well-known/linkset>; rel="linkset"`,
+    `<${BASE_URL}/.well-known/openid-configuration>; rel=" OAuth 2.0 authorization_server"`,
+    `<${BASE_URL}/.well-known/oauth-protected-resource>; rel="protected-resource"`,
+    `<${BASE_URL}/openapi.yaml>; rel="service-desc"`,
+    `<${BASE_URL}/docs>; rel="service-doc"`,
+    `<${BASE_URL}/.well-known/mcp-server>; rel="http://modelcontext.org/protocol/mcp-server"`,
+    `<${BASE_URL}/.well-known/agent-skills/index.json>; rel="https://agentskills.io/skill"`,
+    `<${BASE_URL}/api/health>; rel="status"`,
   ].join(", "));
 
   next();
@@ -47,55 +56,145 @@ app.get("/.well-known/ai-plugin.json", (req, res) => {
   });
 });
 
-app.get("/.well-known/api-catalog.json", (req, res) => {
-  res.setHeader("Content-Type", "application/json");
+app.get("/.well-known/api-catalog", (req, res) => {
+  res.setHeader("Content-Type", "application/linkset+json");
+  res.setHeader("Link", `<${BASE_URL}/.well-known/api-catalog>; rel="self"`);
   res.json({
-    "api-version": "1.0",
-    info: {
-      title: "Digital Persona Core API",
-      description: "API for contact form submissions and service inquiries",
-      contact: {
-        name: "Digital Persona Core",
-        email: "onz@digitalpersona.ai",
-      },
-    },
-    endpoints: [
+    linkset: [
       {
-        path: "/api/contact",
-        methods: ["POST"],
-        summary: "Submit contact form",
-        description: "Send a contact form submission via email",
-      },
-      {
-        path: "/api/health",
-        methods: ["GET"],
-        summary: "Health check",
-        description: "Check API health status",
+        anchor: `${BASE_URL}/api`,
+        links: [
+          {
+            rel: "service-desc",
+            href: `${BASE_URL}/openapi.yaml`,
+            type: "application/yaml",
+            title: "OpenAPI 3.0 Specification",
+          },
+          {
+            rel: "service-doc",
+            href: `${BASE_URL}/docs`,
+            title: "API Documentation",
+          },
+          {
+            rel: "status",
+            href: `${BASE_URL}/api/health`,
+            title: "Health Check Endpoint",
+          },
+        ],
       },
     ],
-    documentation: "https://digitalpersona.ai/docs",
+  });
+});
+
+app.get("/.well-known/linkset", (req, res) => {
+  res.setHeader("Content-Type", "application/linkset+json");
+  res.json({
+    linkset: [
+      {
+        anchor: `${BASE_URL}`,
+        links: [
+          { rel: "service-desc", href: `${BASE_URL}/openapi.yaml` },
+          { rel: "service-doc", href: `${BASE_URL}/docs` },
+          { rel: "linkset", href: `${BASE_URL}/.well-known/api-catalog` },
+          { rel: "https://agentskills.io/skill", href: `${BASE_URL}/.well-known/agent-skills/index.json` },
+          { rel: "http://modelcontext.org/protocol/mcp-server", href: `${BASE_URL}/.well-known/mcp-server` },
+        ],
+      },
+    ],
+  });
+});
+
+app.get("/.well-known/oauth-protected-resource", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.json({
+    resource: "https://digitalpersona.ai",
+    authorization_servers: [`${BASE_URL}/.well-known/openid-configuration`],
+    scopes_supported: ["read", "write"],
+    resource_signing_alg_values_supported: ["RS256"],
+  });
+});
+
+app.get("/.well-known/openid-configuration", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.json({
+    issuer: BASE_URL,
+    authorization_endpoint: `${BASE_URL}/oauth/authorize`,
+    token_endpoint: `${BASE_URL}/oauth/token`,
+    jwks_uri: `${BASE_URL}/.well-known/jwks.json`,
+    response_types_supported: ["code"],
+    grant_types_supported: ["authorization_code", "client_credentials"],
+    subject_types_supported: ["public"],
+    id_token_signing_alg_values_supported: ["RS256"],
+    scopes_supported: ["openid", "profile", "email"],
+    token_endpoint_auth_methods_supported: ["client_secret_post", "none"],
   });
 });
 
 app.get("/.well-known/mcp-server", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.json({
-    name: "Digital Persona Core",
-    version: "1.0.0",
-    description: "Professional digital agency and web development services",
+    schema_version: "v1",
+    serverInfo: {
+      name: "Digital Persona Core",
+      version: "1.0.0",
+      description: "Professional digital agency and web development services",
+    },
     capabilities: {
       tools: [],
-      resources: ["website_content", "services", "portfolio"],
-      prompts: ["contact_form", "service_inquiry"],
+      resources: [
+        {
+          name: "website_content",
+          description: "Information about services, portfolio, and company",
+        },
+      ],
+      prompts: [
+        {
+          name: "contact_form",
+          description: "Help users fill out the contact form",
+        },
+        {
+          name: "service_inquiry",
+          description: "Guide users to select the right service",
+        },
+      ],
     },
-    endpoints: {
-      api: `${BASE_URL}/api`,
-      health: `${BASE_URL}/api/health`,
+    transport: {
+      type: "http",
+      url: `${BASE_URL}/api/mcp`,
     },
-    contact: {
-      email: "onz@digitalpersona.ai",
-      website: "https://digitalpersona.ai",
-    },
+  });
+});
+
+app.get("/.well-known/agent-skills/index.json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.json({
+    $schema: "https://agentskills.io/agent-skills/v0.2.0.json",
+    skills: [
+      {
+        name: "contact_dpa",
+        type: "prompt",
+        description: "Interactive guide to help users fill out contact form and select services",
+        url: `${BASE_URL}/contact`,
+      },
+      {
+        name: "service_catalog",
+        type: "resource",
+        description: "List of available web development and AI services",
+        url: `${BASE_URL}/services`,
+      },
+      {
+        name: "portfolio_browser",
+        type: "resource",
+        description: "Portfolio of completed projects and case studies",
+        url: `${BASE_URL}/portfolio`,
+      },
+      {
+        name: "founder_connect",
+        type: "prompt",
+        description: "Connect with the founder for consultation",
+        url: `${BASE_URL}/founder`,
+      },
+    ],
   });
 });
 

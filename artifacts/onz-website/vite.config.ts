@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
@@ -12,6 +12,33 @@ if (rawPort && (Number.isNaN(port) || port <= 0)) {
 }
 
 const basePath = process.env.BASE_PATH ?? "/";
+const BASE_URL = process.env.BASE_URL || "https://digitalpersona.ai";
+
+function linkHeadersPlugin(): Plugin {
+  return {
+    name: "link-headers",
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const accept = req.headers.accept || "";
+        if (accept.includes("text/markdown")) {
+          res.setHeader("Content-Type", "text/markdown; charset=utf-8");
+        }
+        res.setHeader("Link", [
+          `<${BASE_URL}/.well-known/api-catalog>; rel="service-desc"`,
+          `<${BASE_URL}/.well-known/linkset>; rel="linkset"`,
+          `<${BASE_URL}/.well-known/openid-configuration>; rel="urn:ietf:params:oauth:grant-type:recovery-codes"`,
+          `<${BASE_URL}/.well-known/oauth-protected-resource>; rel="protected-resource"`,
+          `<${BASE_URL}/openapi.yaml>; rel="service-desc"`,
+          `<${BASE_URL}/docs>; rel="service-doc"`,
+          `<${BASE_URL}/.well-known/mcp/server-card.json>; rel="http://modelcontext.org/protocol/mcp-server"`,
+          `<${BASE_URL}/.well-known/agent-skills/index.json>; rel="https://agentskills.io/skill"`,
+          `<${BASE_URL}/api/health>; rel="status"`,
+        ].join(", "));
+        next();
+      });
+    },
+  };
+}
 
 export default defineConfig({
   base: basePath,
@@ -19,6 +46,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     runtimeErrorOverlay(),
+    linkHeadersPlugin(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [

@@ -30,11 +30,11 @@ app.use((req, res, next) => {
   res.setHeader("Link", [
     `<${BASE_URL}/.well-known/api-catalog>; rel="service-desc"`,
     `<${BASE_URL}/.well-known/linkset>; rel="linkset"`,
-    `<${BASE_URL}/.well-known/openid-configuration>; rel=" OAuth 2.0 authorization_server"`,
+    `<${BASE_URL}/.well-known/openid-configuration>; rel="oauth-authorization-server"`,
     `<${BASE_URL}/.well-known/oauth-protected-resource>; rel="protected-resource"`,
     `<${BASE_URL}/openapi.yaml>; rel="service-desc"`,
     `<${BASE_URL}/docs>; rel="service-doc"`,
-    `<${BASE_URL}/.well-known/mcp-server>; rel="http://modelcontext.org/protocol/mcp-server"`,
+    `<${BASE_URL}/.well-known/mcp/server-card.json>; rel="http://modelcontext.org/protocol/mcp-server"`,
     `<${BASE_URL}/.well-known/agent-skills/index.json>; rel="https://agentskills.io/skill"`,
     `<${BASE_URL}/api/health>; rel="status"`,
   ].join(", "));

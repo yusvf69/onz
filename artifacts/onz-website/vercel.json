@@ -2,5 +2,35 @@
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install",
   "outputDirectory": "dist/public",
-  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/$1" }]
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "</.well-known/api-catalog.json>; rel=\"service-desc\", </.well-known/linkset.json>; rel=\"linkset\", </.well-known/openid-configuration.json>; rel=\"oauth-authorization-server\", </.well-known/oauth-protected-resource.json>; rel=\"protected-resource\", </openapi.yaml>; rel=\"service-desc\", </docs>; rel=\"service-doc\", </.well-known/mcp/server-card.json>; rel=\"http://modelcontext.org/protocol/mcp-server\", </.well-known/agent-skills.json>; rel=\"https://agentskills.io/skill\", </api/health>; rel=\"status\""
+        },
+        {
+          "key": "Accept-Post",
+          "value": "text/markdown"
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/linkset.json",
+      "headers": [{ "key": "Content-Type", "value": "application/linkset+json" }]
+    },
+    {
+      "source": "/.well-known/api-catalog.json",
+      "headers": [{ "key": "Content-Type", "value": "application/linkset+json" }]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+    }
+  ]
 }

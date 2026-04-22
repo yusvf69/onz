@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agentskills.io/agent-skills/v0.2.0.json",
+  "skills": [
+    {
+      "name": "contact_dpa",
+      "type": "prompt",
+      "description": "Interactive guide to help users fill out contact form and select services",
+      "url": "https://digitalpersona.ai/contact"
+    },
+    {
+      "name": "service_catalog",
+      "type": "resource",
+      "description": "List of available web development and AI services",
+      "url": "https://digitalpersona.ai/services"
+    },
+    {
+      "name": "portfolio_browser",
+      "type": "resource",
+      "description": "Portfolio of completed projects and case studies",
+      "url": "https://digitalpersona.ai/portfolio"
+    },
+    {
+      "name": "founder_connect",
+      "type": "prompt",
+      "description": "Connect with the founder for consultation",
+      "url": "https://digitalpersona.ai/founder"
+    }
+  ]
+}

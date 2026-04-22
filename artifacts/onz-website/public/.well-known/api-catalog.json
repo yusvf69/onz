@@ -1,0 +1,25 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://digitalpersona.ai/api",
+      "links": [
+        {
+          "rel": "service-desc",
+          "href": "https://digitalpersona.ai/openapi.yaml",
+          "type": "application/yaml",
+          "title": "OpenAPI 3.0 Specification"
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://digitalpersona.ai/docs",
+          "title": "API Documentation"
+        },
+        {
+          "rel": "status",
+          "href": "https://digitalpersona.ai/api/health",
+          "title": "Health Check Endpoint"
+        }
+      ]
+    }
+  ]
+}

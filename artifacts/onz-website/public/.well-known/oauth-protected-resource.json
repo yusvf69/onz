@@ -1,0 +1,6 @@
+{
+  "resource": "https://digitalpersona.ai",
+  "authorization_servers": ["https://digitalpersona.ai/.well-known/openid-configuration.json"],
+  "scopes_supported": ["read", "write"],
+  "resource_signing_alg_values_supported": ["RS256"]
+}

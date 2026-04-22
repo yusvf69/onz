@@ -1,0 +1,31 @@
+{
+  "schema_version": "v1",
+  "serverInfo": {
+    "name": "Digital Persona Core",
+    "version": "1.0.0",
+    "description": "Professional digital agency and web development services"
+  },
+  "capabilities": {
+    "tools": [],
+    "resources": [
+      {
+        "name": "website_content",
+        "description": "Information about services, portfolio, and company"
+      }
+    ],
+    "prompts": [
+      {
+        "name": "contact_form",
+        "description": "Help users fill out the contact form"
+      },
+      {
+        "name": "service_inquiry",
+        "description": "Guide users to select the right service"
+      }
+    ]
+  },
+  "transport": {
+    "type": "http",
+    "url": "https://digitalpersona.ai/api/mcp"
+  }
+}

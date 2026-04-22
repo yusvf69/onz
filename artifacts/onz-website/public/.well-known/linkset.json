@@ -1,0 +1,14 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://digitalpersona.ai",
+      "links": [
+        { "rel": "service-desc", "href": "https://digitalpersona.ai/openapi.yaml" },
+        { "rel": "service-doc", "href": "https://digitalpersona.ai/docs" },
+        { "rel": "linkset", "href": "https://digitalpersona.ai/.well-known/api-catalog" },
+        { "rel": "https://agentskills.io/skill", "href": "https://digitalpersona.ai/.well-known/agent-skills.json" },
+        { "rel": "http://modelcontext.org/protocol/mcp-server", "href": "https://digitalpersona.ai/.well-known/mcp/server-card.json" }
+      ]
+    }
+  ]
+}

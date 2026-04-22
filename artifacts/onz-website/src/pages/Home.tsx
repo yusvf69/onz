@@ -12,25 +12,25 @@ import Footer from "@/components/sections/Footer";
 declare global {
   interface Navigator {
     modelContext?: {
-      provideContext: (context: {
+      provide: (context: {
         serverInfo: { name: string; version: string };
         capabilities: {
           tools?: Array<{
             name: string;
             description: string;
             inputSchema: object;
-            execute: (args: object) => Promise<unknown>;
+            execute: (args: Record<string, unknown>) => Promise<unknown>;
           }>;
           resources?: Array<{ uri: string; name: string; description: string }>;
         };
-      }) => void;
+      }) => Promise<void>;
     };
   }
 }
 
 async function provideTools() {
   if (typeof navigator !== "undefined" && navigator.modelContext) {
-    await navigator.modelContext.provideContext({
+    await navigator.modelContext.provide({
       serverInfo: {
         name: "Digital Persona Core",
         version: "1.0.0",

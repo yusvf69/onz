@@ -5,25 +5,29 @@
       "name": "contact_dpa",
       "type": "prompt",
       "description": "Interactive guide to help users fill out contact form and select services",
-      "url": "https://digitalpersona.ai/contact"
+      "url": "https://digitalpersona.ai/contact",
+      "sha256": "c76b023ff1d88c21b05f963b5c487f2551c9bb2d025c637d0822cfa44612ca4d"
     },
     {
       "name": "service_catalog",
       "type": "resource",
       "description": "List of available web development and AI services",
-      "url": "https://digitalpersona.ai/services"
+      "url": "https://digitalpersona.ai/services",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "name": "portfolio_browser",
       "type": "resource",
       "description": "Portfolio of completed projects and case studies",
-      "url": "https://digitalpersona.ai/portfolio"
+      "url": "https://digitalpersona.ai/portfolio",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "name": "founder_connect",
       "type": "prompt",
       "description": "Connect with the founder for consultation",
-      "url": "https://digitalpersona.ai/founder"
+      "url": "https://digitalpersona.ai/founder",
+      "sha256": "c76b023ff1d88c21b05f963b5c487f2551c9bb2d025c637d0822cfa44612ca4d"
     }
   ]
 }

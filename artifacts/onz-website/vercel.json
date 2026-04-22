@@ -2,17 +2,35 @@
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install",
   "outputDirectory": "dist/public",
+  "framework": null,
+  "routes": [
+    {
+      "src": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "Accept",
+          "value": "(text|application)/markdown.*"
+        }
+      ],
+      "dest": "/api/markdown.ts"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         {
           "key": "Link",
-          "value": "</.well-known/api-catalog.json>; rel=\"service-desc\", </.well-known/linkset.json>; rel=\"linkset\", </.well-known/openid-configuration.json>; rel=\"oauth-authorization-server\", </.well-known/oauth-protected-resource.json>; rel=\"protected-resource\", </openapi.yaml>; rel=\"service-desc\", </docs>; rel=\"service-doc\", </.well-known/mcp/server-card.json>; rel=\"http://modelcontext.org/protocol/mcp-server\", </.well-known/agent-skills.json>; rel=\"https://agentskills.io/skill\", </api/health>; rel=\"status\""
+          "value": "</.well-known/api-catalog.json>; rel=\"service-desc\", </.well-known/linkset.json>; rel=\"linkset\", </.well-known/openid-configuration.json>; rel=\"oauth-authorization-server\", </.well-known/oauth-protected-resource.json>; rel=\"protected-resource\", </openapi.yaml>; rel=\"service-desc\", </docs>; rel=\"service-doc\", </.well-known/mcp/server-card.json>; rel=\"http://modelcontext.org/protocol/mcp-server\", </.well-known/agent-skills/index.json>; rel=\"https://agentskills.io/skill\", </api/health>; rel=\"status\""
         },
         {
           "key": "Accept-Post",
           "value": "text/markdown"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept"
         }
       ]
     },
